@@ -79,18 +79,19 @@ router.route('/careers')
 //		});
 //	});
 
-// on routes that end in /bears/:bear_id
+/// on routes that end in /bears/:bear_id
 // ----------------------------------------------------
-//router.route('/bears/:bear_id')
-//
-//	// get the bear with that id
-//	.get(function(req, res) {
+router.route('/careers/:s1/:s2/:s3')
+
+	// get the bear with that id
+	.get(function(req, res) {
 //		Bear.findById(req.params.bear_id, function(err, bear) {
 //			if (err)
 //				res.send(err);
-//			res.json(bear);
+			res.json("skills passed were: " + req.params.s1 + " and " + req.params.s2 + " and " + req.params.s3);
+//			res.json("skills passed were: " + req.params.s1);
 //		});
-//	})
+	})
 
 	// update the bear with this id
 //	.put(function(req, res) {
