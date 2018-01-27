@@ -72,10 +72,10 @@ natural_language_understanding.analyze(parameters, function(err, response) {
 	});
 
 
-router.route('/question')
+router.route('/question/:answer')
 
 	.post(function(req, res) {
-
+    var questionNo = req.params.answer;
     var body = req.body;
 	var answer = body.q;
 
@@ -109,14 +109,23 @@ natural_language_understanding.analyze(parameters, function(err, response) {
     var result = {};
     var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
     var sentimentFeedback;
+    var question;
     if (sentimentScore < 0) {
         sentimentFeedback = "You sound worried.";
-        result.question = "What would you like to do about this?"
+        switch (questionNo) {
+        case 1:
+            question = "What would you like to do about this?";
+            break;
+        case 2:
+            question = "It sounds as though this would make you much happier";
+            break;
+        }
     } else if (sentiment > 0) {
-        sentimentFeedback = "You sound happy";
+        sentimentFeedback = "It sounds as though this would make you much happier";
     } else {
         sentimentFeedback = "Okay"
     }
+    result.question = question;
     result.feedback = sentimentFeedback;
     result.sentimentScore = sentimentScore;
     res.json(result);
