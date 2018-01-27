@@ -85,6 +85,9 @@ var conversation = new ConversationV1({
   version_date: '2017-05-26'
 });
 
+// Start conversation with empty message.
+conversation.message({}, processResponse);
+
 // Process the conversation response.
 function processResponse(err, response) {
   if (err) {
