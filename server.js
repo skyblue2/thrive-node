@@ -4,33 +4,17 @@
 // call the packages we need
 var express    = require('express');
 var bodyParser = require('body-parser');
-var app        = express();
-//var morgan     = require('morgan');
+var request = require('request');
 
-// configure app
-//app.use(morgan('dev')); // log requests to the console
+var app        = express();
+
 
 // configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var port     = process.env.PORT || 3030; // set our port
-//
-//// DATABASE SETUP
-//var mongoose   = require('mongoose');
-//mongoose.connect('mongodb://node:node@novus.modulusmongo.net:27017/Iganiq8o'); // connect to our database
-//
-//// Handle the connection event
-//var db = mongoose.connection;
-//db.on('error', console.error.bind(console, 'connection error:'));
-//
-//db.once('open', function() {
-//  console.log("DB connection alive");
-//});
-//
-//// Bear models lives here
-//var Bear     = require('./app/models/bear');
-//
+
 // ROUTES FOR OUR API
 // =============================================================================
 
@@ -53,75 +37,34 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/careers')
 
-	// create a bear (accessed at POST http://localhost:8080/bears)
-//	.post(function(req, res) {
-//
-//		var bear = new Bear();		// create a new instance of the Bear model
-//		bear.name = req.body.name;  // set the bears name (comes from the request)
-//
-//		bear.save(function(err) {
-//			if (err)
-//				res.send(err);
-//
-//			res.json({ message: 'Bear created!' });
-//		});
-//
-//
-//	})
-
-	// get all the bears (accessed at GET http://localhost:8080/api/bears)
-//	.get(function(req, res) {
-//		Bear.find(function(err, bears) {
-//			if (err)
-//				res.send(err);
-//
-//			res.json(bears);
-//		});
-//	});
 
 /// on routes that end in /bears/:bear_id
 // ----------------------------------------------------
 router.route('/careers/:s1/:s2/:s3')
 
-	// get the bear with that id
 	.get(function(req, res) {
-//		Bear.findById(req.params.bear_id, function(err, bear) {
-//			if (err)
-//				res.send(err);
-			res.json("skills passed were: " + req.params.s1 + " and " + req.params.s2 + " and " + req.params.s3);
-//			res.json("skills passed were: " + req.params.s1);
-//		});
-	})
+var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+var natural_language_understanding = new NaturalLanguageUnderstandingV1({
+  'username': '3c6b1c4b-6d78-4c28-bb30-b334c020d814',
+  'password': '3NXVMhe8hVTJ',
+  'version_date': '2017-02-27'
+});
 
-	// update the bear with this id
-//	.put(function(req, res) {
-//		Bear.findById(req.params.bear_id, function(err, bear) {
-//
-//			if (err)
-//				res.send(err);
-//
-//			bear.name = req.body.name;
-//			bear.save(function(err) {
-//				if (err)
-//					res.send(err);
-//
-//				res.json({ message: 'Bear updated!' });
-//			});
-//
-//		});
-//	})
+var parameters = {
+  'url': 'www.ibm.com',
+  'features': {
+    'categories': {}
+  }
+};
 
-	// delete the bear with this id
-//	.delete(function(req, res) {
-//		Bear.remove({
-//			_id: req.params.bear_id
-//		}, function(err, bear) {
-//			if (err)
-//				res.send(err);
-//
-//			res.json({ message: 'Successfully deleted' });
-//		});
-//	});
+natural_language_understanding.analyze(parameters, function(err, response) {
+  if (err)
+    console.log('error:', err);
+  else
+    res.json(response);
+});
+	});
+
 
 
 // REGISTER OUR ROUTES -------------------------------
