@@ -5,7 +5,7 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
-
+var _ = require('lodash');
 var app        = express();
 
 
@@ -91,23 +91,36 @@ var parameters = {
   'features':
     {
     'categories': {
-    'emotion': true,
-          'sentiment': true,
           'limit': 2}
    ,
     'keywords': {
       'emotion': true,
       'sentiment': true,
-      'limit': 5
+      'limit': 3
     }
   }
 }
-//4200
+
 natural_language_understanding.analyze(parameters, function(err, response) {
-  if (err)
+  if (err) {
     console.log('error:', err);
-  else
-    res.json(response);
+    }
+  else {
+    var result = {};
+    var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
+    var sentimentFeedback;
+    if (sentimentScore < 0) {
+        sentimentFeedback = "You sound worried.";
+        result.question = "What would you like to do about this?"
+    } else if (sentiment > 0) {
+        sentimentFeedback = "You sound happy";
+    } else {
+        sentimentFeedback = "Okay"
+    }
+    result.feedback = sentimentFeedback;
+    result.sentimentScore = sentimentScore;
+    res.json(result);
+    }
 });
 	});
 
