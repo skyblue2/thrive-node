@@ -66,6 +66,45 @@ natural_language_understanding.analyze(parameters, function(err, response) {
 	});
 
 
+router.route('/skills')
+
+	.post(function(req, res) {
+
+    var body = req.body;
+	var answer = body.q1;
+	answer += body.q2;
+	answer += body.q3;
+
+var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+var natural_language_understanding = new NaturalLanguageUnderstandingV1({
+  'username': '3c6b1c4b-6d78-4c28-bb30-b334c020d814',
+  'password': '3NXVMhe8hVTJ',
+  'version_date': '2017-02-27'
+});
+
+var parameters = {
+  'text': answer,
+  'features': {
+    'entities': {
+      'emotion': true,
+      'sentiment': true,
+      'limit': 2
+    },
+    'keywords': {
+      'emotion': true,
+      'sentiment': true,
+      'limit': 2
+    }
+  }
+}
+
+natural_language_understanding.analyze(parameters, function(err, response) {
+  if (err)
+    console.log('error:', err);
+  else
+    res.json(response);
+});
+	});
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
