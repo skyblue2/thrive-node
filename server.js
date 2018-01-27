@@ -71,6 +71,40 @@ natural_language_understanding.analyze(parameters, function(err, response) {
 });
 	});
 
+var ConversationV1 = require('watson-developer-cloud/conversation/v1');
+router.route('/chat')
+
+	.post(function(req, res) {
+	var answer = req.body.q;
+
+// Set up Conversation service wrapper.
+var conversation = new ConversationV1({
+  username: '3c6b1c4b-6d78-4c28-bb30-b334c020d814', // replace with username from service key
+  password: '3NXVMhe8hVTJ', // replace with password from service key
+  path: { workspace_id: '2be60c63-6011-47cc-b417-f34a299f8aec' }, // replace with workspace ID
+  version_date: '2017-05-26'
+});
+
+// Process the conversation response.
+function processResponse(err, response) {
+  if (err) {
+    console.error(err); // something went wrong
+    return;
+  }
+
+  // If an intent was detected, log it out to the console.
+  if (response.intents.length > 0) {
+    console.log('Detected intent: #' + response.intents[0].intent);
+  }
+
+  // Display the output from dialog, if any.
+  if (response.output.text.length != 0) {
+      console.log(response.output.text[0]);
+  }
+}
+});
+
+
 
 router.route('/question/:answer')
 
