@@ -21,6 +21,12 @@ var port     = process.env.PORT || 3030; // set our port
 // create our router
 var router = express.Router();
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	// do logging
@@ -66,14 +72,12 @@ natural_language_understanding.analyze(parameters, function(err, response) {
 	});
 
 
-router.route('/skills')
+router.route('/question')
 
 	.post(function(req, res) {
 
     var body = req.body;
-	var answer = body.q1;
-	answer += body.q2;
-	answer += body.q3;
+	var answer = body.q;
 
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
@@ -84,20 +88,21 @@ var natural_language_understanding = new NaturalLanguageUnderstandingV1({
 
 var parameters = {
   'text': answer,
-  'features': {
-    'entities': {
-      'emotion': true,
-      'sentiment': true,
-      'limit': 2
-    },
+  'features':
+    {
+    'categories': {
+    'emotion': true,
+          'sentiment': true,
+          'limit': 2}
+   ,
     'keywords': {
       'emotion': true,
       'sentiment': true,
-      'limit': 2
+      'limit': 5
     }
   }
 }
-
+//4200
 natural_language_understanding.analyze(parameters, function(err, response) {
   if (err)
     console.log('error:', err);
