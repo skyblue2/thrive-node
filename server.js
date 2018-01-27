@@ -113,11 +113,11 @@ natural_language_understanding.analyze(parameters, function(err, response) {
     if (sentimentScore < 0) {
         sentimentFeedback = "You sound worried.";
         switch (questionNo) {
-        case 1:
+        case "1":
             question = "What would you like to do about this?";
             break;
-        case 2:
-            question = "It sounds as though this would make you much happier";
+        case "2":
+            question = "another question here?";
             break;
         }
     } else if (sentimentScore > 0) {
