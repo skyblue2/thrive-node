@@ -120,7 +120,7 @@ natural_language_understanding.analyze(parameters, function(err, response) {
             question = "It sounds as though this would make you much happier";
             break;
         }
-    } else if (sentiment > 0) {
+    } else if (sentimentScore > 0) {
         sentimentFeedback = "It sounds as though this would make you much happier";
     } else {
         sentimentFeedback = "Okay"
