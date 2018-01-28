@@ -105,7 +105,8 @@ function processResponse(err, response) {
       var result = {};
       result.question = response.output.text[0];
       console.log(answer);
-      result.sentimentScore = getSentiment(answer);
+      var sentimentScore = getSentiment(answer);
+      result.sentimentScore = sentimentScore;
       res.json(result);
   }
 }
@@ -143,7 +144,7 @@ natural_language_understanding.analyze(parameters, function(err, response) {
     }
   else {
    var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
-   console.log(sentimentScore);
+   console.log("SENTIMENT SCORE: " + sentimentScore);
    return sentimentScore;
    }
   });
