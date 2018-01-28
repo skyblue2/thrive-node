@@ -90,13 +90,14 @@ router.route('/chat')
 
     // Start conversation with empty message.
     conversation.message({
-      workspace_id: '28ae3b36-bc40-42ba-8f3c-fdc941f52ade'
+      workspace_id: '28ae3b36-bc40-42ba-8f3c-fdc941f52ade',
     }, processResponse);
 
     // Process the conversation response.
     function processResponse(err, response) {
       if (err) {
         console.error(err); // something went wrong
+        reject(err);
         return;
       }
 
@@ -110,10 +111,18 @@ router.route('/chat')
         var result = {};
         result.question = response.output.text[0];
         getSentiment(answer).then(function(score) {
-          result.sentimentScore = score;
+          result.sentimentScore = 1;
           res.json(result);
+
+      conversation.message({
+            workspace_id: '28ae3b36-bc40-42ba-8f3c-fdc941f52ade',
+            input: { text: answer },
+            // Send back the context to maintain state.
+            context : response.context,
+          }, processResponse)
         });
       }
+
     }
   });
 
