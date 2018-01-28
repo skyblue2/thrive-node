@@ -81,12 +81,11 @@ var ConversationV1 = require('watson-developer-cloud/conversation/v1.js');
 var conversation = new ConversationV1({
   username: 'c907f284-82c9-4538-972a-70d5208ff368', // replace with username from service key
   password: 'w7fcdT4dXXZB', // replace with password from service key
-  path: {workspace_id: '28ae3b36-bc40-42ba-8f3c-fdc941f52ade'}, // replace with workspace ID
   version_date: '2016-07-11'
 });
 
 // Start conversation with empty message.
-conversation.message({}, processResponse);
+conversation.message({workspace_id: '28ae3b36-bc40-42ba-8f3c-fdc941f52ade'}, processResponse);
 
 // Process the conversation response.
 function processResponse(err, response) {
