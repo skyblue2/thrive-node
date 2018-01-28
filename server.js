@@ -71,18 +71,18 @@ natural_language_understanding.analyze(parameters, function(err, response) {
 });
 	});
 
-var ConversationV1 = require('watson-developer-cloud/conversation/v1');
 router.route('/chat')
 
 	.post(function(req, res) {
 	var answer = req.body.q;
 
 // Set up Conversation service wrapper.
+var ConversationV1 = require('watson-developer-cloud/conversation/v1.js');
 var conversation = new ConversationV1({
-  'username': 'f00e8bb9-c727-4554-8d15-e422d63aade8', // replace with username from service key
-  'password': 'fqQRvS5TI3gf', // replace with password from service key
-  'path': {'workspace_id': '2be60c63-6011-47cc-b417-f34a299f8aec'}, // replace with workspace ID
-  'version_date': '2017-05-26'
+  username: 'c907f284-82c9-4538-972a-70d5208ff368', // replace with username from service key
+  password: 'w7fcdT4dXXZB', // replace with password from service key
+  path: {workspace_id: '28ae3b36-bc40-42ba-8f3c-fdc941f52ade'}, // replace with workspace ID
+  version_date: '2016-07-11'
 });
 
 // Start conversation with empty message.
