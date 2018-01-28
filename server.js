@@ -111,7 +111,7 @@ router.route('/chat')
         var result = {};
         result.question = response.output.text[0];
         getSentiment(answer).then(function(score) {
-          result.sentimentScore = 1;
+          result.sentimentScore = score;
           res.json(result);
 
       conversation.message({
