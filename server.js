@@ -112,23 +112,30 @@ natural_language_understanding.analyze(parameters, function(err, response) {
     var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
     var sentimentFeedback;
     var question;
-    if (sentimentScore < 0) {
+    if (sentimentScore <= 0) {
         sentimentFeedback = "You sound worried.";
         switch (questionNo) {
         case "1":
-            question = "What would you like to do about this?";
+            question = "I can see that would be a concern for you. Let's discuss this and find some ideas to help. It's important to understand what you'd like to achieve so let's start that as a first step.";
             break;
         case "2":
-            question = "another question here?";
+            question = "What would your goal be?";
             break;
-        }
+        case "3":
+                    question = "So your goal is to earn money so that you can have a better life. What have you done so far towards achieving this goal?";
+                    break;
+
+                case "4":
+                    question = "Okay that's good. What else have you done?";
+                    break;
+
+                }
     } else if (sentimentScore > 0) {
-        sentimentFeedback = "It sounds as though this would make you much happier";
+        question = "It sounds as though this would make you much happier";
     } else {
-        sentimentFeedback = "Okay"
+        question = "Okay"
     }
     result.question = question;
-    result.feedback = sentimentFeedback;
     result.sentimentScore = sentimentScore;
     res.json(result);
     }
