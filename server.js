@@ -102,19 +102,19 @@ function processResponse(err, response) {
   // Display the output from dialog, if any.
   if (response.output.text.length != 0) {
       console.log(response.output.text[0]);
+      var result = {};
+      result.question = response.output.text[0];
+      console.log(answer);
+      result.sentimentScore = getSentiment(answer);
+      res.json(result);
   }
 }
 });
 
 
 
-router.route('/question/:answer')
-
-	.post(function(req, res) {
-    var questionNo = req.params.answer;
-    var body = req.body;
-	var answer = body.q;
-
+function getSentiment(answer) {
+console.log("inside sentiment method:: " + answer);
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
   'username': '3c6b1c4b-6d78-4c28-bb30-b334c020d814',
@@ -142,32 +142,75 @@ natural_language_understanding.analyze(parameters, function(err, response) {
     console.log('error:', err);
     }
   else {
-    var result = {};
-    var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
-    var sentimentFeedback;
-    var question;
-    if (sentimentScore < 0) {
-        sentimentFeedback = "You sound worried.";
-        switch (questionNo) {
-        case "1":
-            question = "What would you like to do about this?";
-            break;
-        case "2":
-            question = "another question here?";
-            break;
-        }
-    } else if (sentimentScore > 0) {
-        sentimentFeedback = "It sounds as though this would make you much happier";
-    } else {
-        sentimentFeedback = "Okay"
-    }
-    result.question = question;
-    result.feedback = sentimentFeedback;
-    result.sentimentScore = sentimentScore;
-    res.json(result);
-    }
-});
-	});
+   var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
+   console.log(sentimentScore);
+   return sentimentScore;
+   }
+  });
+
+  }
+
+
+
+//
+//	.post(function(req, res) {
+//    var questionNo = req.params.answer;
+//    var body = req.body;
+//	var answer = body.q;
+//
+//var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+//var natural_language_understanding = new NaturalLanguageUnderstandingV1({
+//  'username': '3c6b1c4b-6d78-4c28-bb30-b334c020d814',
+//  'password': '3NXVMhe8hVTJ',
+//  'version_date': '2017-02-27'
+//});
+//
+//var parameters = {
+//  'text': answer,
+//  'features':
+//    {
+//    'categories': {
+//          'limit': 2}
+//   ,
+//    'keywords': {
+//      'emotion': true,
+//      'sentiment': true,
+//      'limit': 3
+//    }
+//  }
+//}
+//
+//natural_language_understanding.analyze(parameters, function(err, response) {
+//  if (err) {
+//    console.log('error:', err);
+//    }
+//  else {
+//    var result = {};
+//    var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
+//    var sentimentFeedback;
+//    var question;
+//    if (sentimentScore < 0) {
+//        sentimentFeedback = "You sound worried.";
+//        switch (questionNo) {
+//        case "1":
+//            question = "What would you like to do about this?";
+//            break;
+//        case "2":
+//            question = "another question here?";
+//            break;
+//        }
+//    } else if (sentimentScore > 0) {
+//        sentimentFeedback = "It sounds as though this would make you much happier";
+//    } else {
+//        sentimentFeedback = "Okay"
+//    }
+//    result.question = question;
+//    result.feedback = sentimentFeedback;
+//    result.sentimentScore = sentimentScore;
+//    res.json(result);
+//    }
+//});
+//	});
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
