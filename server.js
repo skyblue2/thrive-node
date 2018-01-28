@@ -105,19 +105,16 @@ function processResponse(err, response) {
       var result = {};
       result.question = response.output.text[0];
       console.log(answer);
-      var sentimentScore = getSentiment(res, result, answer);
+      var sentimentScore = getSentiment(answer);
+      result.sentimentScore = sentimentScore;
+      res.json(result);
   }
 }
 });
 
-function sendResult(res, result, sentimentScore) {
- console.log("BACK HERE: " + sentimentScore);
-       result.sentimentScore = sentimentScore;
-       res.json(result);
-}
 
 
-function getSentiment(res, result, answer) {
+function getSentiment(answer) {
 console.log("inside sentiment method:: " + answer);
 var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 var natural_language_understanding = new NaturalLanguageUnderstandingV1({
@@ -147,9 +144,8 @@ natural_language_understanding.analyze(parameters, function(err, response) {
     }
   else {
    var sentimentScore = _.sumBy(response.keywords, function(o) { return o.sentiment.score; });
-   console.log("SENTIMENT SCORE: " + sentimentScore);
-   sendResult(res, result, sentimentScore);
-//   return sentimentScore;
+   console.log(sentimentScore);
+   return sentimentScore;
    }
   });
 
