@@ -132,7 +132,9 @@ router.route('/question/:answer')
             case "4":
               question = "Okay that's good. What else have you done?";
               break;
-
+            default:
+               question = "Let's divert. Is there anyone in your life who can help you achieve your goals?";
+               break;
           }
         } else if (sentimentScore > 0) {
           question = "It sounds as though this would make you much happier";
