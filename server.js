@@ -79,10 +79,10 @@ router.route('/chat')
 
 // Set up Conversation service wrapper.
 var conversation = new ConversationV1({
-  'username': 'f00e8bb9-c727-4554-8d15-e422d63aade8', // replace with username from service key
-  'password': 'fqQRvS5TI3gf', // replace with password from service key
-  'path': {'workspace_id': '2be60c63-6011-47cc-b417-f34a299f8aec'}, // replace with workspace ID
-  'version_date': '2017-05-26'
+  username: '3c6b1c4b-6d78-4c28-bb30-b334c020d814', // replace with username from service key
+  password: '3NXVMhe8hVTJ', // replace with password from service key
+  path: { workspace_id: '2be60c63-6011-47cc-b417-f34a299f8aec' }, // replace with workspace ID
+  version_date: '2017-05-26'
 });
 
 // Start conversation with empty message.
